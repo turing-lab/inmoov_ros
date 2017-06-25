@@ -396,3 +396,114 @@ joints:
     minSensor:      750
     maxSensor:      1520
 
+  fill1:
+    bus:            0
+    servoPin:       8
+    minPulse:       550
+    maxPulse:       1100
+    minGoal:        -5.0
+    maxGoal:        -60.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      17
+    minSensor:      750
+    maxSensor:      1520
+
+  fill2:
+    bus:            0
+    servoPin:       9
+    minPulse:       550
+    maxPulse:       1100
+    minGoal:        -5.0
+    maxGoal:        -60.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      17
+    minSensor:      750
+    maxSensor:      1520
+
+  fill3:
+    bus:            0
+    servoPin:       10
+    minPulse:       550
+    maxPulse:       1100
+    minGoal:        -5.0
+    maxGoal:        -60.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      17
+    minSensor:      750
+    maxSensor:      1520
+
+  fill4:
+    bus:            0
+    servoPin:       11
+    minPulse:       550
+    maxPulse:       1100
+    minGoal:        -5.0
+    maxGoal:        -60.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      17
+    minSensor:      750
+    maxSensor:      1520
+
+  fill5:
+    bus:            1
+    servoPin:       10
+    minPulse:       550
+    maxPulse:       1100
+    minGoal:        -5.0
+    maxGoal:        -60.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      17
+    minSensor:      750
+    maxSensor:      1520
+
+  fill6:
+    bus:            1
+    servoPin:       11
+    minPulse:       550
+    maxPulse:       1100
+    minGoal:        -5.0
+    maxGoal:        -60.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      17
+    minSensor:      750
+    maxSensor:      1520
+
+  fill7:
+    bus:            2
+    servoPin:       10
+    minPulse:       550
+    maxPulse:       1100
+    minGoal:        -5.0
+    maxGoal:        -60.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      17
+    minSensor:      750
+    maxSensor:      1520
+
+  fill8:
+    bus:            2
+    servoPin:       11
+    minPulse:       550
+    maxPulse:       1100
+    minGoal:        -5.0
+    maxGoal:        -60.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      17
+    minSensor:      750
+    maxSensor:      1520
