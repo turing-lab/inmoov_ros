@@ -76,7 +76,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # iterate through servo collection
         for j,b in rospy.get_param('/joints').items():
-            
+
             number = rospy.get_param('/joints/' + j + '/bus')
             commandbusname = '/servobus/' + str(number).zfill(2) + '/motorcommand'
             servicebusname = '/servobus/' + str(number).zfill(2) + '/motorparameter'
@@ -91,7 +91,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.motorcommand = MotorCommand()
         self.motorparameter = MotorParameter()
         self.jointcommand = JointState()
-        
+
         self.jointNames = []
 
         rospy.init_node('trainer', anonymous=True)
@@ -99,11 +99,11 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         print("INITIALIZED")
 
         self.statusSubscriber = rospy.Subscriber("motor_status", MotorStatus, self.motorstatus)
-        
+
         print("SUBSCRIBER COMPLETE")
 
         self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
-        
+
         print("JOINTPUBLISHER COMPLETE")
 
         self.servo = 0
@@ -112,7 +112,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.servoChanged()
 
         self.btnWriteConfiguration.clicked.connect(self.writeConfiguration)
-        
+
         print("INIT COMPLETE")
 
     def connectUI(self):
@@ -130,7 +130,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.txtMaxSensor.editingFinished.connect(lambda: self.valueChanged(self.txtMaxSensor, PROTOCOL.MAXSENSOR))
         self.chkEnabled.stateChanged.connect(lambda: self.valueChanged(self.chkEnabled, PROTOCOL.ENABLE))
         self.chkCalibrated.stateChanged.connect(lambda: self.valueChanged(self.chkCalibrated, PROTOCOL.CALIBRATED))
-        
+
         self.sliderGoal.valueChanged.connect(lambda: self.valueChanged(self.sliderGoal, PROTOCOL.GOAL))
 
     def disconnectUI(self):
@@ -148,7 +148,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.txtMaxSensor.editingFinished.disconnect()
         self.chkEnabled.stateChanged.disconnect()
         self.chkCalibrated.stateChanged.disconnect()
-        
+
         self.sliderGoal.valueChanged.disconnect()
 
     def writeConfiguration(self):
@@ -156,7 +156,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         export_yaml('config.yaml')
 
     def servoChanged(self):
-    
+
         print("SERVOCHANGED")
 
         self.disconnectUI()
@@ -208,7 +208,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         minval = float(self.values[PROTOCOL.MINGOAL])
         maxval = float(self.values[PROTOCOL.MAXGOAL])
         goal   = float(self.values[PROTOCOL.GOAL])
-        
+
         if minval < maxval :
             self.sliderGoal.setMinimum(int(minval * 1000.0))
             self.sliderGoal.setMaximum(int(maxval * 1000.0))
@@ -221,7 +221,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.connectUI()
 
-    
+
     def getParameter(self, parameter):
 
         j = self.joint
@@ -265,7 +265,14 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             motorcommand = MotorCommand()
             motorcommand.id = int(s.servoPin)
             motorcommand.parameter = parameter
-            motorcommand.value = value
+            if parameter == PROTOCOL.GOAL:
+                if float(s.minGoal) > float(s.maxGoal):
+                    motorcommand.value = float(s.minGoal) - float(value)
+                    print "inversed " + str(value) + "->" + str(motorcommand.value)
+                else:
+                    motorcommand.value = value
+            else:
+                motorcommand.value = value
 
             self.commandbus[s.bus].publish(motorcommand)
 
@@ -276,7 +283,14 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.jointcommand.header = Header()
             self.jointcommand.header.stamp = rospy.Time.now()
             self.jointcommand.name.append(self.jointName)
-            self.jointcommand.position.append(value)
+            if parameter == PROTOCOL.GOAL:
+                if float(s.minGoal) > float(s.maxGoal):
+                    self.jointcommand.position.append(float(s.minGoal) - float(value))
+                    # print "inversed " + str(value) + "->" + str(motorcommand.value)
+                else:
+                    self.jointcommand.position.append(value)
+            else:
+                self.jointcommand.position.append(value)
             self.jointcommand.velocity = []
             self.jointcommand.effort= []
             self.jointPublisher.publish(self.jointcommand)
@@ -331,7 +345,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             minval = float(self.values[PROTOCOL.MINGOAL])
             maxval = float(self.values[PROTOCOL.MAXGOAL])
             goal   = float(self.values[PROTOCOL.GOAL])
-        
+
             if minval < maxval :
                 self.sliderGoal.setMinimum(int(minval * 1000.0))
                 self.sliderGoal.setMaximum(int(maxval * 1000.0))
@@ -372,10 +386,10 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.chkMoving.setChecked(data.moving)
             self.chkPower.setChecked(data.power)
 
-    
+
     def degreestoradians(self, d):
         return d*(3.1415926/180.0)
-    
+
     def setupDropDowns(self):
 
         for name in self.servos:
@@ -449,6 +463,6 @@ def main():
     form.show()  # Show the form
     #app.aboutToQuit.connect(form.emit_export_yaml) # myExitHandler is a callable
     app.exec_()  # and execute the app
-   
+
 if __name__ == '__main__':  # if we're running file directly and not importing it
     main()
