@@ -57,14 +57,14 @@
   </link>
 
   <joint name="${side}_shoulder_lift_joint" type="revolute">
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 -1 0"/>
     <xacro:if value="${side == 'l'}">
       <limit effort="1000.0" lower="${l_shoulder_lift_joint_lower}" upper="${l_shoulder_lift_joint_upper}" velocity="${l_shoulder_lift_joint_velocity}" />
     </xacro:if>
     <xacro:if value="${side == 'r'}">
       <limit effort="1000.0" lower="${r_shoulder_lift_joint_lower}" upper="${r_shoulder_lift_joint_upper}" velocity="${r_shoulder_lift_joint_velocity}" />
     </xacro:if>
-    <origin rpy="0 0 0" xyz="0 ${flip * -0.012} -0.04"/>
+    <origin rpy="0 0.5236 0" xyz="0 ${flip * -0.012} -0.04"/>
     <parent link="${side}_shoulder_base_link"/>
     <child link="${side}_shoulder_link"/>
   </joint>
