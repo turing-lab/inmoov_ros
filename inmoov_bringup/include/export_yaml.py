@@ -56,6 +56,8 @@ def export_yaml(filename):
             export.write(str('    minSensor:').ljust(20) + str(int(val)) + '\n')
             val = rospy.get_param(key + 'maxSensor')
             export.write(str('    maxSensor:').ljust(20) + str(int(val)) + '\n')
+            val = rospy.get_param(key + 'inverted')
+            export.write(str('    inverted:').ljust(20) + str(bool(val)) + '\n')
 
             export.write('\n')
 

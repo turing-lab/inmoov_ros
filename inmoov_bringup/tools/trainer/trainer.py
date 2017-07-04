@@ -112,7 +112,6 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.servoChanged()
 
         self.btnWriteConfiguration.clicked.connect(self.writeConfiguration)
-
         print("INIT COMPLETE")
 
     def connectUI(self):
@@ -239,6 +238,8 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 val = rospy.get_param(key + 'maxGoal')
             elif parameter == PROTOCOL.REST:
                 val = rospy.get_param(key + 'rest')
+            elif parameter == PROTOCOL.GOAL:
+                val = rospy.get_param(key + 'rest')
             elif parameter == PROTOCOL.MINPULSE:
                 val = rospy.get_param(key + 'minPulse')
             elif parameter == PROTOCOL.MAXPULSE:
@@ -255,6 +256,37 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         except:
             return -1.0
 
+    def broadcastRestState(self):
+        print "SETTING REST POSITION"
+        for jointName in self.servos:
+            s = self.servos[jointName]
+
+            if bool(s.inverted):
+                value = float(s.minGoal) - float(s.rest)
+                print jointName + " " + str(s.inverted)
+            else:
+                value = float(s.rest)
+            # send to arduino directly
+            motorcommand = MotorCommand()
+            motorcommand.id = int(s.servoPin)
+            motorcommand.parameter = PROTOCOL.GOAL
+            motorcommand.value = value
+
+            self.commandbus[s.bus].publish(motorcommand)
+
+            # send to joint_command
+            self.jointcommand.name = []
+            self.jointcommand.position = []
+
+            self.jointcommand.header = Header()
+            self.jointcommand.header.stamp = rospy.Time.now()
+            self.jointcommand.name.append(jointName)
+            self.jointcommand.position.append(value)
+            self.jointcommand.velocity = []
+            self.jointcommand.effort= []
+            self.jointPublisher.publish(self.jointcommand)
+
+
     def setParameter(self, parameter, value):
 
         #try:
@@ -266,7 +298,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             motorcommand.id = int(s.servoPin)
             motorcommand.parameter = parameter
             if parameter == PROTOCOL.GOAL:
-                if float(s.minGoal) > float(s.maxGoal):
+                if bool(s.inverted):
                     motorcommand.value = float(s.minGoal) - float(value)
                     print "inversed " + str(value) + "->" + str(motorcommand.value)
                 else:
@@ -284,7 +316,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.jointcommand.header.stamp = rospy.Time.now()
             self.jointcommand.name.append(self.jointName)
             if parameter == PROTOCOL.GOAL:
-                if float(s.minGoal) > float(s.maxGoal):
+                if bool(s.inverted):
                     self.jointcommand.position.append(float(s.minGoal) - float(value))
                     # print "inversed " + str(value) + "->" + str(motorcommand.value)
                 else:
@@ -436,6 +468,9 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             s.maxsensor =  int(rospy.get_param(key + 'maxsensor'))
             s.maxspeed  =  float(rospy.get_param(key + 'maxspeed'))
             s.smoothing =  int(rospy.get_param(key + 'smoothing'))
+            s.rest      =  float(rospy.get_param(key + 'rest'))
+            s.inverted  =  bool(rospy.get_param(key + 'inverted'))
+            s.goal      =  s.rest
 
             self.servos[name] = s
 
@@ -461,6 +496,8 @@ def main():
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     form = TrainerApp()  # We set the form to be our ExampleApp (design)
     form.show()  # Show the form
+    sleep(15)
+    form.broadcastRestState()
     #app.aboutToQuit.connect(form.emit_export_yaml) # myExitHandler is a callable
     app.exec_()  # and execute the app
 

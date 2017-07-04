@@ -46,7 +46,10 @@ def load_config_from_param():
 
         s.sensorpin =  rospy.get_param(key + 'sensorPin')
         s.minSensor =  rospy.get_param(key + 'minSensor')
-        s.maxSensor =  rospy.get_param(key + 'maxSensor')
+        s.maxSensor  =  rospy.get_param(key + 'maxSensor')
+        s.inverted =  rospy.get_param(key + 'inverted')
+
+        s.goal      = s.rest
 
         servos[name] = s
 

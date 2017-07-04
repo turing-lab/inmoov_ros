@@ -21,3 +21,5 @@ class Servo:
     sensorPin = -1
     minSensor = -1.0
     maxSensor = -1.0
+
+    inverted = False

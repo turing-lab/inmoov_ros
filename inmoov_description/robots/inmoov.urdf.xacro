@@ -18,7 +18,7 @@
     <visual>
       <geometry>
         <cylinder length="0.11" radius="0.26"/>
-      </geometry> 
+      </geometry>
       <origin rpy="0 0 0" xyz="0 0 0.055"/>
       <xacro:base_color/>
     </visual>
@@ -110,7 +110,7 @@
   <joint name="l_shoulder_out_joint" type="revolute">
    <axis xyz="1 0 0"/>
    <limit effort="1000.0" lower="${l_shoulder_out_joint_lower}" upper="${l_shoulder_out_joint_upper}" velocity="${l_shoulder_out_joint_velocity}" />
-   <origin rpy="0 0 0" xyz="0 0.143 0.298"/>
+   <origin rpy="-1.3963 0 0" xyz="0 0.143 0.298"/>
    <parent link="torso_link"/>
    <child link="l_shoulder_base_link"/>
   </joint>
@@ -126,4 +126,3 @@
   </joint>
 
 </robot>
-

@@ -12,8 +12,8 @@
 
 <node pkg="inmoov_bringup" type="rviz_manager.py" name="rviz_manager" respawn="true"/>
 
-<include file="$(find inmoov_description)/launch/display.launch"/> 
+<include file="$(find inmoov_description)/launch/display.launch"/>
 
-<node name="trainer" pkg="inmoov_bringup" type="trainer.py" respawn="true" />
+<node name="trainer" pkg="inmoov_bringup" type="trainer.py" respawn="true" output="screen" />
 
 </launch>
