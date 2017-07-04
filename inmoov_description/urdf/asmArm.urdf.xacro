@@ -77,7 +77,7 @@
     <xacro:if value="${side == 'r'}">
       <limit effort="1000.0" lower="${r_upper_arm_roll_joint_lower}" upper="${r_upper_arm_roll_joint_upper}" velocity="${r_upper_arm_roll_joint_velocity}" />
     </xacro:if>
-    <origin rpy="0 0 0" xyz="0 ${flip * -0.066} -0.060"/>
+    <origin rpy="0 0 -1.5708" xyz="0 ${flip * -0.066} -0.060"/>
     <parent link="${side}_shoulder_link"/>
     <child link="${side}_bicep_link"/>
   </joint>

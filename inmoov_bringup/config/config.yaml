@@ -491,7 +491,7 @@ joints:
     maxPulse:       2450
     minGoal:        90.0
     maxGoal:        -90.0
-    rest:           0.0
+    rest:           90.0
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      18
@@ -504,9 +504,9 @@ joints:
     servoPin:       7
     minPulse:       700
     maxPulse:       2400
-    minGoal:        -90.0
-    maxGoal:        90.0
-    rest:           0.0
+    minGoal:        90.0
+    maxGoal:        120
+    rest:           90
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      18
