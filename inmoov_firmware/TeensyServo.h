@@ -1,5 +1,9 @@
 #include <Servo.h>
+#if defined(ARDUINO_AVR_MEGA2560)
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 #include "eeprom.h"
 #include "configuration.h"
 #include <ros.h>

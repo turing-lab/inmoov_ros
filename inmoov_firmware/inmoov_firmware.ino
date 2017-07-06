@@ -170,7 +170,10 @@ ros::ServiceServer<inmoov_msgs::MotorParameter::Request, inmoov_msgs::MotorParam
 
 
 void setupADC() {
-  analogReadResolution(12);
+  // if it's not the teensy don't set ADC resolution
+  #if !defined(ARDUINO_AVR_MEGA2560)
+    analogReadResolution(12);
+  #endif
   analogReference(EXTERNAL);
 }
 

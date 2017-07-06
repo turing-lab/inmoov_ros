@@ -1,6 +1,12 @@
 #include <EEPROM.h>
 #include <Servo.h>
-#include <WProgram.h>
+
+#if defined(ARDUINO_AVR_MEGA2560)
+  #include <Arduino.h>
+#else
+  #include <WProgram.h>
+#endif
+
 #include "configuration.h"
 #include "TeensyServo.h"
 #include <ros.h>
@@ -304,7 +310,11 @@ void TeensyServo::update() {
 */
 
 void TeensyServo::setupADC() {
-  analogReadResolution(12);
+  // if it's not the teensy don't set ADC resolution
+  #if !defined(ARDUINO_AVR_MEGA2560)
+    analogReadResolution(12);
+  #endif
+  
   analogReference(EXTERNAL);
   //analogReadAveraging(8);
 }
