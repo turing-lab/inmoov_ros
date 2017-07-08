@@ -2,13 +2,16 @@
 #include <Servo.h>
 #include "TeensyServo.h"
 #include "configuration.h"
+#include "protocol.h"
 #include <ros.h>
 #include <inmoov_msgs/MotorCommand.h>
 #include <inmoov_msgs/MotorParameter.h>
 #include <inmoov_msgs/MotorStatus.h>
-#include <std_srvs/Empty.h>
 
 #define LED 13
+
+void commandCb(const inmoov_msgs::MotorCommand&);
+void getParameter(const inmoov_msgs::MotorParameter::Request&, inmoov_msgs::MotorParameter::Response&);
 
 int i, j;
 int updateMillis;
@@ -16,7 +19,9 @@ int commands;
 
 TeensyServo *tServo[12];
 
-int commandAngle;
+char joint[2] = " ";
+byte bus = 0;
+
 int startMillis;
 
 ros::NodeHandle  nh;
@@ -24,6 +29,12 @@ ros::NodeHandle  nh;
 inmoov_msgs::MotorCommand command_msg;
 inmoov_msgs::MotorParameter parameter_msg;
 inmoov_msgs::MotorStatus status_msg;
+
+// Publishers and subscribers for ROS
+ros::Publisher motorstatus("motorstatus", &status_msg);
+ros::Subscriber<inmoov_msgs::MotorCommand> motorcommand("motorcommand", &commandCb);
+ros::ServiceServer<inmoov_msgs::MotorParameter::Request, inmoov_msgs::MotorParameter::Response> server("motorparameter", &getParameter);
+
 
 const bool heartbeats[] = {1, 0, 1, 0, 0, 0, 0, 0};
 
@@ -33,7 +44,6 @@ void getParameter(const inmoov_msgs::MotorParameter::Request & req, inmoov_msgs:
   float value = 0.0;
 
   switch (parameter) {
-
     case P_GOALPOSITION:
       value = tServo[id]->getGoal();
       break;
@@ -100,11 +110,9 @@ void getParameter(const inmoov_msgs::MotorParameter::Request & req, inmoov_msgs:
   }
 
   res.data = value;
-
 }
 
 void commandCb( const inmoov_msgs::MotorCommand& command_msg) {
-
   byte id = command_msg.id;
   byte parameter = command_msg.parameter;
   float value = command_msg.value;
@@ -155,19 +163,8 @@ void commandCb( const inmoov_msgs::MotorCommand& command_msg) {
 
     case P_GOALSPEED:
       tServo[id]->setMaxSpeed(value);
-
   }
-
-
 }
-
-
-ros::Publisher motorstatus("motorstatus", &status_msg);
-
-ros::Subscriber<inmoov_msgs::MotorCommand> motorcommand("motorcommand", &commandCb);
-
-ros::ServiceServer<inmoov_msgs::MotorParameter::Request, inmoov_msgs::MotorParameter::Response> server("motorparameter", &getParameter);
-
 
 void setupADC() {
   // if it's not the teensy don't set ADC resolution
@@ -176,7 +173,6 @@ void setupADC() {
   #endif
   analogReference(EXTERNAL);
 }
-
 
 void updateServos() {
   for (i = 0; i < NUMSERVOS; i++) {
@@ -197,7 +193,6 @@ void setupServos() {
   tServo[9] = new TeensyServo(9, A2);
   tServo[10] = new TeensyServo(10, A1);
   tServo[11] = new TeensyServo(11, A0);
-
 }
 
 byte generateChecksum() {
@@ -228,48 +223,12 @@ void setup() {
   updateMillis = millis();
   commands = 0;
 
-
-
   nh.loginfo("Setup Complete!!!");
-
 }
 
-int pushmotorstatus = 0;  // which motorstatus to update
-
-char joint[2] = " ";
-byte bus = 0;
-
 void loop() {
-
   updateServos();
-
   digitalWrite(LED, heartbeats[((millis() >> 7) & 7)]);
-  /*
-    if ((millis() - updateMillis) >= (UPDATEPERIOD / NUMSERVOS)) {
-        status_msg.id           = pushmotorstatus;
-        status_msg.goal         = tServo[pushmotorstatus]->getGoal();
-        status_msg.position     = tServo[pushmotorstatus]->readPositionAngle();
-        status_msg.presentspeed = tServo[pushmotorstatus]->readPresentSpeed();
-        status_msg.moving       = tServo[pushmotorstatus]->getMoving();
-        //status_msg.posraw       = tServo[servo]->sampleDuration;
-        status_msg.posraw       = tServo[pushmotorstatus]->readPositionRaw();
-        status_msg.enabled      = tServo[pushmotorstatus]->getEnabled();
-        status_msg.power        = tServo[pushmotorstatus]->getPower();
-
-        motorstatus.publish( &status_msg);
-
-        pushmotorstatus++;
-        if(pushmotorstatus == NUMSERVOS) {
-          pushmotorstatus = 0;
-        }
-
-        updateMillis = millis();
-        nh.spinOnce();
-
-
-      }
-  */
-
 
   if ((millis() - updateMillis) >= UPDATEPERIOD) {
     for (int servo = 0; servo < NUMSERVOS; servo++) {
@@ -297,12 +256,6 @@ void loop() {
     nh.spinOnce();
 
     commands = 0;
-
   }
-
   nh.spinOnce();
-
 }
-
-
-

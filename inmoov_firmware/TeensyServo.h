@@ -1,9 +1,10 @@
 #include <Servo.h>
 #if defined(ARDUINO_AVR_MEGA2560)
-#include <Arduino.h>
+  #include <Arduino.h>
 #else
-#include <WProgram.h>
+  #include <WProgram.h>
 #endif
+
 #include "eeprom.h"
 #include "configuration.h"
 #include <ros.h>
@@ -15,7 +16,7 @@ class TeensyServo {
     void readEeprom(int);
     void writeEeprom();
     int generateEepromChecksum();
-    
+
     float goalAngle;
 
   public:
@@ -105,5 +106,4 @@ class TeensyServo {
     float readPresentSpeed();
 
     void updatePosition();
-
 };
