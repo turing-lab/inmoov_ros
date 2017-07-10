@@ -1,30 +1,63 @@
 #include <EEPROM.h>
 #include <Servo.h>
-#include <WProgram.h>
+
+#if defined(ARDUINO_AVR_MEGA2560)
+  #include <Arduino.h>
+#else
+  #include <WProgram.h>
+#endif
+
 #include "configuration.h"
 #include "TeensyServo.h"
 #include <ros.h>
 
+#define NUM_SAMPLES 350
 
-TeensyServo::TeensyServo(int pin, int sensor) {
-  this->servoPin = pin;
-  this->sensorPin = sensor;
-
-  pinMode(servoPin, OUTPUT);
-  pinMode(sensorPin, INPUT);
+TeensyServo::TeensyServo() {
+  this->servoPin = -1;
+  this->sensorPin = -1;
 
   readEeprom(servoPin);
-
-  //setGoal(readPositionAngle());
 
   moving = false;
   enabled = 0;
 
   sampleStartMillis = millis();
-
-
 }
 
+TeensyServo::TeensyServo(int pin, int sensor) {
+  setServoPin(pin);
+  setSensorPin(sensor);
+
+  readEeprom(servoPin);
+
+  moving = false;
+  enabled = 0;
+
+  sampleStartMillis = millis();
+}
+
+void TeensyServo::setServoPin(int pin) {
+  if(pin >= 0) {
+    this->servoPin = pin;
+    pinMode(servoPin, OUTPUT);
+  }
+}
+
+int TeensyServo::getServoPin() {
+  return this->servoPin;
+}
+
+void TeensyServo::setSensorPin(int pin) {
+  if(pin >= 0) {
+    this->sensorPin = pin;
+    pinMode(sensorPin, INPUT);
+  }
+}
+
+int TeensyServo::getSensorPin(int pin) {
+  return this->sensorPin;
+}
 
 void TeensyServo::setGoal(float a) {
   /*
@@ -54,11 +87,9 @@ void TeensyServo::setGoal(float a) {
   //nh.loginfo("SetGoal!!!");
 }
 
-
 float TeensyServo::getGoal() {
   return goalAngle;
 }
-
 
 void TeensyServo::moveToMicroseconds(int microseconds) {
   this->startMillis = millis();
@@ -95,8 +126,6 @@ void TeensyServo::moveToMicroseconds(int microseconds) {
   moving = true;
 }
 
-
-
 short TeensyServo::readPositionRaw() {
   /*
     long int retval =0;
@@ -111,8 +140,6 @@ short TeensyServo::readPositionRaw() {
 
 }
 
-
-#define NUM_SAMPLES 350
 void TeensyServo::updatePosition() {
   for (int i = 0; i < 50; i++) {
     sampleBucket += analogRead(this->sensorPin);
@@ -167,7 +194,6 @@ void TeensyServo::updatePosition() {
   }
 */
 
-
 float TeensyServo::readPositionAngle() {
   short p = readPositionRaw();
 
@@ -182,11 +208,8 @@ short TeensyServo::readPositionPulse() {
 }
 
 void TeensyServo::update() {
-
   ////Serial.println("Servo Update!");
-
   this->updatePosition();
-
 
   deltaMillis = millis() - startMillis;
 
@@ -277,7 +300,6 @@ void TeensyServo::update() {
       break;
       moving = false;
   }
-
 }
 
 /*
@@ -304,7 +326,11 @@ void TeensyServo::update() {
 */
 
 void TeensyServo::setupADC() {
-  analogReadResolution(12);
+  // if it's not the teensy don't set ADC resolution
+  #if !defined(ARDUINO_AVR_MEGA2560)
+    analogReadResolution(12);
+  #endif
+
   analogReference(EXTERNAL);
   //analogReadAveraging(8);
 }
@@ -320,7 +346,6 @@ void TeensyServo::setMinPulse(short minpulse) {
 
 short TeensyServo::getMinPulse() {
   return e.minPulse;
-
 }
 
 void TeensyServo::setMaxPulse(short maxpulse) {
@@ -334,7 +359,6 @@ void TeensyServo::setMaxPulse(short maxpulse) {
 
 short TeensyServo::getMaxPulse() {
   return e.maxPulse;
-
 }
 
 void TeensyServo::setMinAngle(float minangle) {
@@ -383,13 +407,12 @@ int TeensyServo::getMaxSensor() {
 }
 
 void TeensyServo::setEnabled(bool val) {
-
   if (val != 0) {
     // if we haven't, just readposition and use that instead.
     if (receivedCommand == false) {
       setGoal(readPositionAngle());
     }
-    
+
     servo.attach(this->servoPin, e.minPulse, e.maxPulse); //,readPositionPulse());
     enabled = 1;
   }
@@ -434,7 +457,6 @@ void TeensyServo::readEeprom(int s) {
     e.checksum = generateEepromChecksum();
     writeEeprom();
   }
-
 }
 
 void TeensyServo::writeEeprom() {
@@ -443,10 +465,7 @@ void TeensyServo::writeEeprom() {
   EEPROM.put(offset, e);
 }
 
-
-
 int TeensyServo::generateEepromChecksum() {
-
   return 14;
 }
 
@@ -481,12 +500,10 @@ float TeensyServo::readPresentSpeed() {
 }
 
 bool TeensyServo::getMoving() {
-
   if (abs(readPositionAngle() - goalAngle) < 2)
     return 0;
   else
     return 1;
-
 }
 
 bool TeensyServo::getPower() {
@@ -495,5 +512,3 @@ bool TeensyServo::getPower() {
   else
     return 0;
 }
-
-
