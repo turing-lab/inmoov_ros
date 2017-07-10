@@ -16,6 +16,7 @@ void getParameter(const inmoov_msgs::MotorParameter::Request&, inmoov_msgs::Moto
 int i, j;
 int updateMillis;
 int commands;
+int servoCount = 0;
 
 TeensyServo *tServo[12];
 
@@ -163,6 +164,16 @@ void commandCb( const inmoov_msgs::MotorCommand& command_msg) {
 
     case P_GOALSPEED:
       tServo[id]->setMaxSpeed(value);
+      break;
+
+    case P_SERVO_INIT:
+      int v = (int)value;
+      int servoPin = v & 0x3FF;
+      int sensorPin = (v & 0xFFC00) >> 10;
+      // sensorPin = (sensorPin == 0x3FF)?-1:sensorPin;
+      tServo[servoCount] = new TeensyServo(servoPin, sensorPin);
+      servoCount++;
+      break;
   }
 }
 
@@ -181,18 +192,18 @@ void updateServos() {
 }
 
 void setupServos() {
-  tServo[0] = new TeensyServo(0, A8);
-  tServo[1] = new TeensyServo(1, A9);
-  tServo[2] = new TeensyServo(2, A10);
-  tServo[3] = new TeensyServo(3, A11);
-  tServo[4] = new TeensyServo(4, A7);
-  tServo[5] = new TeensyServo(5, A6);
-  tServo[6] = new TeensyServo(6, A5);
-  tServo[7] = new TeensyServo(7, A4);
-  tServo[8] = new TeensyServo(8, A3);
-  tServo[9] = new TeensyServo(9, A2);
-  tServo[10] = new TeensyServo(10, A1);
-  tServo[11] = new TeensyServo(11, A0);
+  // tServo[0] = new TeensyServo(0, A8);
+  // tServo[1] = new TeensyServo(1, A9);
+  // tServo[2] = new TeensyServo(2, A10);
+  // tServo[3] = new TeensyServo(3, A11);
+  // tServo[4] = new TeensyServo(4, A7);
+  // tServo[5] = new TeensyServo(5, A6);
+  // tServo[6] = new TeensyServo(6, A5);
+  // tServo[7] = new TeensyServo(7, A4);
+  // tServo[8] = new TeensyServo(8, A3);
+  // tServo[9] = new TeensyServo(9, A2);
+  // tServo[10] = new TeensyServo(10, A1);
+  // tServo[11] = new TeensyServo(11, A0);
 }
 
 byte generateChecksum() {
@@ -231,7 +242,7 @@ void loop() {
   digitalWrite(LED, heartbeats[((millis() >> 7) & 7)]);
 
   if ((millis() - updateMillis) >= UPDATEPERIOD) {
-    for (int servo = 0; servo < NUMSERVOS; servo++) {
+    for (int servo = 0; servo < servoCount; servo++) {
 
       status_msg.joint        = joint;
       status_msg.bus          = bus;

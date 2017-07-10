@@ -13,21 +13,50 @@
 
 #define NUM_SAMPLES 350
 
-TeensyServo::TeensyServo(int pin, int sensor) {
-  this->servoPin = pin;
-  this->sensorPin = sensor;
-
-  pinMode(servoPin, OUTPUT);
-  pinMode(sensorPin, INPUT);
+TeensyServo::TeensyServo() {
+  this->servoPin = -1;
+  this->sensorPin = -1;
 
   readEeprom(servoPin);
-
-  //setGoal(readPositionAngle());
 
   moving = false;
   enabled = 0;
 
   sampleStartMillis = millis();
+}
+
+TeensyServo::TeensyServo(int pin, int sensor) {
+  setServoPin(pin);
+  setSensorPin(sensor);
+
+  readEeprom(servoPin);
+
+  moving = false;
+  enabled = 0;
+
+  sampleStartMillis = millis();
+}
+
+void TeensyServo::setServoPin(int pin) {
+  if(pin >= 0) {
+    this->servoPin = pin;
+    pinMode(servoPin, OUTPUT);
+  }
+}
+
+int TeensyServo::getServoPin() {
+  return this->servoPin;
+}
+
+void TeensyServo::setSensorPin(int pin) {
+  if(pin >= 0) {
+    this->sensorPin = pin;
+    pinMode(sensorPin, INPUT);
+  }
+}
+
+int TeensyServo::getSensorPin(int pin) {
+  return this->sensorPin;
 }
 
 void TeensyServo::setGoal(float a) {

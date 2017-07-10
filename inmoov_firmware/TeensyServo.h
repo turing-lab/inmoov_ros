@@ -55,7 +55,14 @@ class TeensyServo {
 
     Servo servo;
 
+    TeensyServo();
     TeensyServo(int, int);
+
+    void setServoPin(int);
+    int getServoPin();
+
+    void setSensorPin(int);
+    int getSensorPin(int);
 
     void setGoal(float);
     float getGoal();

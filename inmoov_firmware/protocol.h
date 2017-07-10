@@ -1,6 +1,7 @@
 #pragma once
 
 //Protocol Constants
+#define P_SERVO_INIT      0x01
 #define P_READ            0x02
 #define P_WRITE           0x03
 #define P_MINANGLE        0x06
