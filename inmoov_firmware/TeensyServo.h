@@ -62,7 +62,7 @@ class TeensyServo {
     int getServoPin();
 
     void setSensorPin(int);
-    int getSensorPin(int);
+    int getSensorPin();
 
     void setGoal(float);
     float getGoal();

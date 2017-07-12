@@ -38,8 +38,8 @@ TeensyServo::TeensyServo(int pin, int sensor) {
 }
 
 void TeensyServo::setServoPin(int pin) {
+  this->servoPin = pin;
   if(pin >= 0) {
-    this->servoPin = pin;
     pinMode(servoPin, OUTPUT);
   }
 }
@@ -49,13 +49,13 @@ int TeensyServo::getServoPin() {
 }
 
 void TeensyServo::setSensorPin(int pin) {
+  this->sensorPin = pin;
   if(pin >= 0) {
-    this->sensorPin = pin;
     pinMode(sensorPin, INPUT);
   }
 }
 
-int TeensyServo::getSensorPin(int pin) {
+int TeensyServo::getSensorPin() {
   return this->sensorPin;
 }
 
@@ -141,16 +141,18 @@ short TeensyServo::readPositionRaw() {
 }
 
 void TeensyServo::updatePosition() {
-  for (int i = 0; i < 50; i++) {
-    sampleBucket += analogRead(this->sensorPin);
-  }
-  sampleCount += 50;
+  if(this->sensorPin >= 0) {  
+    for (int i = 0; i < 50; i++) {
+      sampleBucket += analogRead(this->sensorPin);
+    }
+    sampleCount += 50;
 
-  if (sampleCount == NUM_SAMPLES) {
-    sampleCount = 0;
-    this->position = sampleBucket /= NUM_SAMPLES;
-    this->sampleDuration = millis() - this->sampleStartMillis;
-    this->sampleStartMillis = millis();
+    if (sampleCount == NUM_SAMPLES) {
+      sampleCount = 0;
+      this->position = sampleBucket /= NUM_SAMPLES;
+      this->sampleDuration = millis() - this->sampleStartMillis;
+      this->sampleStartMillis = millis();
+    }
   }
 }
 
