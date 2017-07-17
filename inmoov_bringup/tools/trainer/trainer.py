@@ -262,7 +262,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             s = self.servos[jointName]
 
             if bool(s.inverted):
-                value = float(s.minGoal) - float(s.rest)
+                value = float(s.maxGoal) - float(s.rest)
                 print jointName + " " + str(s.inverted)
             else:
                 value = float(s.rest)
@@ -281,7 +281,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.jointcommand.header = Header()
             self.jointcommand.header.stamp = rospy.Time.now()
             self.jointcommand.name.append(jointName)
-            self.jointcommand.position.append(value)
+            self.jointcommand.position.append(float(s.rest))
             self.jointcommand.velocity = []
             self.jointcommand.effort= []
             self.jointPublisher.publish(self.jointcommand)
@@ -299,13 +299,14 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             motorcommand.parameter = parameter
             if parameter == PROTOCOL.GOAL:
                 if bool(s.inverted):
-                    motorcommand.value = float(s.minGoal) - float(value)
+                    motorcommand.value = float(s.maxGoal) - float(value)
                     print "inversed " + str(value) + "->" + str(motorcommand.value)
                 else:
                     motorcommand.value = value
             else:
                 motorcommand.value = value
-
+            # print "[" +  str(s.bus) + "]->" + str(motorcommand.value)
+            # motorcommand.value = 10.0
             self.commandbus[s.bus].publish(motorcommand)
 
             # send to joint_command
@@ -315,14 +316,15 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.jointcommand.header = Header()
             self.jointcommand.header.stamp = rospy.Time.now()
             self.jointcommand.name.append(self.jointName)
-            if parameter == PROTOCOL.GOAL:
-                if bool(s.inverted):
-                    self.jointcommand.position.append(float(s.minGoal) - float(value))
-                    # print "inversed " + str(value) + "->" + str(motorcommand.value)
-                else:
-                    self.jointcommand.position.append(value)
-            else:
-                self.jointcommand.position.append(value)
+            # if parameter == PROTOCOL.GOAL:
+            #     if bool(s.inverted):
+            #         self.jointcommand.position.append(float(s.maxGoal) - float(value))
+            #         # print "inversed " + str(value) + "->" + str(motorcommand.value)
+            #     else:
+            #         self.jointcommand.position.append(value)
+            # else:
+            #     self.jointcommand.position.append(value)
+            self.jointcommand.position.append(value)
             self.jointcommand.velocity = []
             self.jointcommand.effort= []
             self.jointPublisher.publish(self.jointcommand)
@@ -495,10 +497,10 @@ def main():
     app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     form = TrainerApp()  # We set the form to be our ExampleApp (design)
-    form.show()  # Show the form
-    sleep(15)
-    form.broadcastRestState()
     #app.aboutToQuit.connect(form.emit_export_yaml) # myExitHandler is a callable
+    sleep(6)
+    form.broadcastRestState()
+    form.show()  # Show the form
     app.exec_()  # and execute the app
 
 if __name__ == '__main__':  # if we're running file directly and not importing it

@@ -2,9 +2,9 @@
 
 <rosparam file="$(find inmoov_bringup)/config/config.yaml"/>
 
-<node pkg="inmoov_bringup" type="joint_command_dispatcher.py" name="joint_command_dispatcher" respawn="true"/>
+<!-- <node pkg="inmoov_bringup" type="joint_command_dispatcher.py" name="joint_command_dispatcher" respawn="true"/> -->
 
-<node pkg="inmoov_bringup" type="joint_status_dispatcher.py" name="joint_status_dispatcher" respawn="true"/>
+<!-- <node pkg="inmoov_bringup" type="joint_status_dispatcher.py" name="joint_status_dispatcher" respawn="true"/> -->
 
 <node pkg="inmoov_bringup" type="motor_status_dispatcher.py" name="motor_status_dispatcher" respawn="true"/>
 
