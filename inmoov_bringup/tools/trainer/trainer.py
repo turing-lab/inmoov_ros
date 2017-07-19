@@ -260,19 +260,29 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         print "SETTING REST POSITION"
         for jointName in self.servos:
             s = self.servos[jointName]
+            motorcommand = MotorCommand()
+            motorcommand.id = int(s.servoPin)
+            motorcommand.parameter = PROTOCOL.SERVO_INIT
+            motorcommand.value = s.servoPin
+            self.commandbus[s.bus].publish(motorcommand)
+
+
+        for jointName in self.servos:
+            s = self.servos[jointName]
 
             if bool(s.inverted):
                 value = float(s.maxGoal) - float(s.rest)
                 print jointName + " " + str(s.inverted)
             else:
                 value = float(s.rest)
+
             # send to arduino directly
             motorcommand = MotorCommand()
             motorcommand.id = int(s.servoPin)
             motorcommand.parameter = PROTOCOL.GOAL
             motorcommand.value = value
-
             self.commandbus[s.bus].publish(motorcommand)
+
 
             # send to joint_command
             self.jointcommand.name = []

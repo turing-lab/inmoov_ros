@@ -5,6 +5,7 @@ from enum import Enum
 
 class PROTOCOL():
     #Protocol Constants
+    SERVO_INIT        = 0x01
 
     ENABLE            = 0x18
     GOAL              = 0x1E
@@ -20,7 +21,7 @@ class PROTOCOL():
     MINSENSOR         = 0xA2
     MAXSENSOR         = 0xA4
     MAXSPEED          = 0x0C
-    
+
     GOALSPEED         = 0x20
     CALIBRATED        = 0xA0
     LED               = 0x19
