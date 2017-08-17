@@ -84,15 +84,15 @@ joints:
     servoPin:       35
     minPulse:       480
     maxPulse:       1400
-    minGoal:        60
+    minGoal:        40
     maxGoal:        100
-    rest:           60
+    rest:           40
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      -1
     minSensor:      540
     maxSensor:      2180
-    inverted:       True
+    inverted:       False
 
   r_middle_joint:
     bus:            1
@@ -294,7 +294,7 @@ joints:
     servoPin:       37
     minPulse:       550
     maxPulse:       2500
-    minGoal:        0
+    minGoal:        30
     maxGoal:        100
     rest:           30
     maxSpeed:       0.0
