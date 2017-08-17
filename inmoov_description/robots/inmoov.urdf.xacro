@@ -100,7 +100,7 @@
   <joint name="r_wrist_roll_joint" type="revolute">
    <axis xyz="0 0 1"/>
    <limit effort="1000.0" lower="${r_wrist_roll_joint_lower}" upper="${r_wrist_roll_joint_upper}" velocity="${r_wrist_roll_joint_velocity}" />
-   <origin rpy="0 0 0" xyz="-0.0144 0.01  -0.2885"/>
+   <origin rpy="0 0 -3.1416" xyz="-0.0144 0.01  -0.2885"/>
    <parent link="r_forearm_link"/>
    <child link="r_hand_link"/>
   </joint>
@@ -120,7 +120,7 @@
   <joint name="l_wrist_roll_joint" type="revolute">
    <axis xyz="0 0 1"/>
    <limit effort="1000.0" lower="${l_wrist_roll_joint_lower}" upper="${l_wrist_roll_joint_upper}" velocity="${l_wrist_roll_joint_velocity}" />
-   <origin rpy="0 0 0" xyz="-0.0144 -0.01  -0.2885"/>
+   <origin rpy="0 0 3.1416" xyz="-0.0144 -0.01  -0.2885"/>
    <parent link="l_forearm_link"/>
    <child link="l_hand_link"/>
   </joint>
