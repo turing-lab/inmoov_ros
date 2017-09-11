@@ -85,7 +85,7 @@ joints:
     minPulse:       480
     maxPulse:       1400
     minGoal:        40
-    maxGoal:        100
+    maxGoal:        110
     rest:           40
     maxSpeed:       0.0
     smoothing:      0
@@ -115,14 +115,14 @@ joints:
     minPulse:       550
     maxPulse:       1500
     minGoal:        40
-    maxGoal:        100
+    maxGoal:        110
     rest:           40.0
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      -1
     minSensor:      750
     maxSensor:      2460
-    inverted:       False
+    inverted:       True
 
   r_ring_joint:
     bus:            1
