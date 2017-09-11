@@ -309,7 +309,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             motorcommand.parameter = parameter
             if parameter == PROTOCOL.GOAL:
                 if bool(s.inverted):
-                    motorcommand.value = float(s.maxGoal) - float(value)
+                    motorcommand.value = float(s.maxGoal) - float(value) + float(s.minGoal)
                     print "inversed " + str(value) + "->" + str(motorcommand.value)
                 else:
                     motorcommand.value = value
