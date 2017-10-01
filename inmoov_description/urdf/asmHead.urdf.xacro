@@ -72,7 +72,7 @@
   <joint name="head_pan_joint" type="revolute">
    <axis xyz="0 0 1"/>
    <limit effort="1000.0" lower="${head_pan_joint_lower}" upper="${head_pan_joint_upper}" velocity="${head_pan_joint_velocity}" />
-   <origin rpy="0 0 -0.8726" xyz="0 0 0.0245"/>
+   <origin rpy="0 0 -1.7453" xyz="0 0 0.0245"/>
    <parent link="head_base_link"/>
    <child link="head_link"/>
   </joint>
