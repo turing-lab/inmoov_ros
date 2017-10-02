@@ -32,7 +32,11 @@ class HeadTracking(object):
 
     def __init__(self):
         super(HeadTracking, self).__init__()
-        rospy.init_node('head_tracking', anonymous=True)
+	rospy.init_node('head_tracking', anonymous=True)
+        
+
+	self.motorcommand = MotorCommand()
+	self.motorparameter = MotorParameter()
 
         self.servos = load_config_from_param()
         self.servicebus = {}
@@ -40,7 +44,7 @@ class HeadTracking(object):
         self.jointcommand = JointState()
         self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
         self.statusSubscriber = rospy.Subscriber("oculus/data", Float64MultiArray, self.head_track)
-        rospy.spin()
+        
         # iterate through servo collection
         for j,b in rospy.get_param('/joints').items():
 
@@ -52,6 +56,9 @@ class HeadTracking(object):
             if not self.servicebus.has_key(number):
                 self.commandbus[number] = rospy.Publisher(commandbusname, MotorCommand, queue_size=10)
                 self.servicebus[number] = rospy.ServiceProxy(servicebusname, MotorParameter)
+	
+	rospy.spin()
+	
 
     def head_track(self, data):
         yaw 	= self.rad2Grad(data.data[0])
@@ -76,7 +83,7 @@ class HeadTracking(object):
             motorcommand.value = value
         # print "[" +  str(s.bus) + "]->" + str(motorcommand.value)
         # motorcommand.value = 10.0
-        ##self.commandbus[s.bus].publish(motorcommand)
+        self.commandbus[s.bus].publish(motorcommand)
 
         print "Moving " + name + " to " + str(motorcommand.value)
 
@@ -87,14 +94,6 @@ class HeadTracking(object):
         self.jointcommand.header = Header()
         self.jointcommand.header.stamp = rospy.Time.now()
         self.jointcommand.name.append(name)
-        # if parameter == PROTOCOL.GOAL:
-        #     if bool(s.inverted):
-        #         self.jointcommand.position.append(float(s.maxGoal) - float(value))
-        #         # print "inversed " + str(value) + "->" + str(motorcommand.value)
-        #     else:
-        #         self.jointcommand.position.append(value)
-        # else:
-        #     self.jointcommand.position.append(value)
         self.jointcommand.position.append(value)
         self.jointcommand.velocity = []
         self.jointcommand.effort= []
