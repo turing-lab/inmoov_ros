@@ -4,22 +4,37 @@ bringup:
 
 joints:
 
-  l_wrist_roll_joint:
-    bus:            0
-    servoPin:       7
-    minPulse:       1401
-    maxPulse:       1901
-    minGoal:        0.0
-    maxGoal:        180.0
+  r_middle_joint:   
+    bus:            1
+    servoPin:       4
+    minPulse:       550
+    maxPulse:       2450
+    minGoal:        0
+    maxGoal:        180
     rest:           0
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      -1
-    minSensor:      1571
-    maxSensor:      2281
+    minSensor:      900
+    maxSensor:      3800
     inverted:       False
 
-  l_ring_joint:
+  r_shoulder_lift_joint:
+    bus:            1
+    servoPin:       37
+    minPulse:       550
+    maxPulse:       2500
+    minGoal:        0
+    maxGoal:        70
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      750
+    maxSensor:      2200
+    inverted:       False
+
+  l_ring_joint:     
     bus:            0
     servoPin:       5
     minPulse:       550
@@ -34,7 +49,7 @@ joints:
     maxSensor:      3650
     inverted:       False
 
-  l_index_joint:
+  l_index_joint:    
     bus:            0
     servoPin:       3
     minPulse:       550
@@ -49,7 +64,22 @@ joints:
     maxSensor:      3590
     inverted:       True
 
-  r_thumb_joint:
+  head_roll_joint:  
+    bus:            2
+    servoPin:       5
+    minPulse:       950
+    maxPulse:       1850
+    minGoal:        -15.0
+    maxGoal:        15.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      1661
+    maxSensor:      3314
+    inverted:       False
+
+  r_thumb_joint:    
     bus:            1
     servoPin:       2
     minPulse:       550
@@ -64,7 +94,37 @@ joints:
     maxSensor:      3400
     inverted:       True
 
-  l_thumb_joint:
+  r_wrist_roll_joint:
+    bus:            1
+    servoPin:       7
+    minPulse:       1000
+    maxPulse:       1550
+    minGoal:        0.0
+    maxGoal:        -180.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      1655
+    maxSensor:      2410
+    inverted:       False
+
+  l_middle_joint:   
+    bus:            0
+    servoPin:       4
+    minPulse:       550
+    maxPulse:       2450
+    minGoal:        0
+    maxGoal:        180
+    rest:           0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      735
+    maxSensor:      3650
+    inverted:       True
+
+  l_thumb_joint:    
     bus:            0
     servoPin:       2
     minPulse:       550
@@ -84,8 +144,8 @@ joints:
     servoPin:       35
     minPulse:       480
     maxPulse:       1400
-    minGoal:        40
-    maxGoal:        110
+    minGoal:        40.0
+    maxGoal:        100.0
     rest:           40
     maxSpeed:       0.0
     smoothing:      0
@@ -94,19 +154,34 @@ joints:
     maxSensor:      2180
     inverted:       False
 
-  r_middle_joint:
-    bus:            1
-    servoPin:       4
+  jaw_joint:        
+    bus:            2
+    servoPin:       2
     minPulse:       550
     maxPulse:       2450
-    minGoal:        0
-    maxGoal:        180
+    minGoal:        14.0
+    maxGoal:        16.25
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      550
+    maxSensor:      2450
+    inverted:       False
+
+  l_wrist_roll_joint:
+    bus:            0
+    servoPin:       7
+    minPulse:       1401
+    maxPulse:       1901
+    minGoal:        0.0
+    maxGoal:        180.0
     rest:           0
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      -1
-    minSensor:      900
-    maxSensor:      3800
+    minSensor:      1571
+    maxSensor:      2281
     inverted:       False
 
   r_elbow_flex_joint:
@@ -124,7 +199,22 @@ joints:
     maxSensor:      2460
     inverted:       True
 
-  r_ring_joint:
+  eyes_pan_joint:   
+    bus:            2
+    servoPin:       0
+    minPulse:       1201
+    maxPulse:       1800
+    minGoal:        -30.0
+    maxGoal:        30.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      2300
+    maxSensor:      3615
+    inverted:       False
+
+  r_ring_joint:     
     bus:            1
     servoPin:       5
     minPulse:       550
@@ -139,44 +229,14 @@ joints:
     maxSensor:      3100
     inverted:       False
 
-  r_wrist_roll_joint:
-    bus:            1
-    servoPin:       7
-    minPulse:       1000
-    maxPulse:       1550
-    minGoal:        0.0
-    maxGoal:        -180.0
-    rest:           0.0
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      1655
-    maxSensor:      2410
-    inverted:       False
-
-  r_shoulder_out_joint:
-    bus:            1
-    servoPin:       38
-    minPulse:       550
-    maxPulse:       1100
-    minGoal:        90
-    maxGoal:        135
-    rest:           90
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      750
-    maxSensor:      1520
-    inverted:       False
-
-  r_shoulder_lift_joint:
-    bus:            1
+  l_shoulder_lift_joint:
+    bus:            0
     servoPin:       37
     minPulse:       550
     maxPulse:       2500
-    minGoal:        0
-    maxGoal:        70
-    rest:           0.0
+    minGoal:        30
+    maxGoal:        100
+    rest:           30
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      -1
@@ -184,7 +244,22 @@ joints:
     maxSensor:      2200
     inverted:       False
 
-  r_index_joint:
+  head_tilt_joint:  
+    bus:            2
+    servoPin:       4
+    minPulse:       950
+    maxPulse:       1700
+    minGoal:        0.0
+    maxGoal:        100.0
+    rest:           60.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      1200
+    maxSensor:      2800
+    inverted:       False
+
+  r_index_joint:    
     bus:            1
     servoPin:       3
     minPulse:       550
@@ -199,7 +274,7 @@ joints:
     maxSensor:      3640
     inverted:       False
 
-  l_pinky_joint:
+  l_pinky_joint:    
     bus:            0
     servoPin:       6
     minPulse:       550
@@ -214,7 +289,22 @@ joints:
     maxSensor:      3540
     inverted:       False
 
-  r_pinky_joint:
+  head_pan_joint:   
+    bus:            2
+    servoPin:       3
+    minPulse:       550
+    maxPulse:       2450
+    minGoal:        0.0
+    maxGoal:        180.0
+    rest:           100.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      780
+    maxSensor:      3615
+    inverted:       False
+
+  r_pinky_joint:    
     bus:            1
     servoPin:       6
     minPulse:       500
@@ -244,20 +334,35 @@ joints:
     maxSensor:      2000
     inverted:       False
 
-  l_middle_joint:
-    bus:            0
-    servoPin:       4
-    minPulse:       550
-    maxPulse:       2450
-    minGoal:        0
-    maxGoal:        180
-    rest:           0
+  waist_pan_joint:  
+    bus:            2
+    servoPin:       7
+    minPulse:       500
+    maxPulse:       2500
+    minGoal:        -90.0
+    maxGoal:        90.0
+    rest:           0.0
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      -1
-    minSensor:      735
-    maxSensor:      3650
-    inverted:       True
+    minSensor:      1700
+    maxSensor:      3000
+    inverted:       False
+
+  waist_roll_joint: 
+    bus:            2
+    servoPin:       6
+    minPulse:       1325
+    maxPulse:       1775
+    minGoal:        15.0
+    maxGoal:        0.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      -1
+    minSensor:      2950
+    maxSensor:      2000
+    inverted:       False
 
   r_upper_arm_roll_joint:
     bus:            1
@@ -289,52 +394,7 @@ joints:
     maxSensor:      3650
     inverted:       False
 
-  l_shoulder_lift_joint:
-    bus:            0
-    servoPin:       37
-    minPulse:       550
-    maxPulse:       2500
-    minGoal:        30
-    maxGoal:        100
-    rest:           30
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      750
-    maxSensor:      2200
-    inverted:       False
-
-  waist_pan_joint:
-    bus:            2
-    servoPin:       7
-    minPulse:       500
-    maxPulse:       2500
-    minGoal:        -90.0
-    maxGoal:        90.0
-    rest:           0.0
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      1700
-    maxSensor:      3000
-    inverted:       False
-
-  waist_roll_joint:
-    bus:            2
-    servoPin:       6
-    minPulse:       1325
-    maxPulse:       1775
-    minGoal:        15.0
-    maxGoal:        0.0
-    rest:           0.0
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      2950
-    maxSensor:      2000
-    inverted:       False
-
-  eyes_tilt_joint:
+  eyes_tilt_joint:  
     bus:            2
     servoPin:       1
     minPulse:       1300
@@ -349,77 +409,18 @@ joints:
     maxSensor:      3573
     inverted:       False
 
-  jaw_joint:
-    bus:            2
-    servoPin:       2
+  r_shoulder_out_joint:
+    bus:            1
+    servoPin:       38
     minPulse:       550
-    maxPulse:       2450
-    minGoal:        0.0
-    maxGoal:        5.0
-    rest:           0.0
+    maxPulse:       1100
+    minGoal:        90
+    maxGoal:        135
+    rest:           90
     maxSpeed:       0.0
     smoothing:      0
     sensorPin:      -1
-    minSensor:      550
-    maxSensor:      2450
+    minSensor:      750
+    maxSensor:      1520
     inverted:       False
 
-  head_pan_joint:
-    bus:            2
-    servoPin:       3
-    minPulse:       550
-    maxPulse:       2450
-    minGoal:        50.0
-    maxGoal:        150.0
-    rest:           100.0
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      780
-    maxSensor:      3615
-    inverted:       False
-
-  head_tilt_joint:
-    bus:            2
-    servoPin:       4
-    minPulse:       950
-    maxPulse:       1700
-    minGoal:        20.0
-    maxGoal:        100.0
-    rest:           60.0
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      1200
-    maxSensor:      2800
-    inverted:       False
-
-  head_roll_joint:
-    bus:            2
-    servoPin:       5
-    minPulse:       950
-    maxPulse:       1850
-    minGoal:        -15.0
-    maxGoal:        15.0
-    rest:           0.0
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      1661
-    maxSensor:      3314
-    inverted:       False
-
-  eyes_pan_joint:
-    bus:            2
-    servoPin:       0
-    minPulse:       1201
-    maxPulse:       1800
-    minGoal:        -30.0
-    maxGoal:        30.0
-    rest:           0.0
-    maxSpeed:       0.0
-    smoothing:      0
-    sensorPin:      -1
-    minSensor:      2300
-    maxSensor:      3615
-    inverted:       False

@@ -1,0 +1,3 @@
+import pyaudio
+
+class Stream:
