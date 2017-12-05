@@ -81,6 +81,7 @@
       <axis xyz="0 0 -1"/>
       <limit effort="1000.0" lower="${r_upper_arm_roll_joint_lower}" upper="${r_upper_arm_roll_joint_upper}" velocity="${r_upper_arm_roll_joint_velocity}" />
       <origin rpy="0 0 0.959549361" xyz="0 ${flip * -0.066} -0.060"/>
+      <!-- <origin rpy="0 0 0.959549361" xyz="0 -0.066 -0.060"/> -->
     </xacro:if>
 
     <parent link="${side}_shoulder_link"/>
