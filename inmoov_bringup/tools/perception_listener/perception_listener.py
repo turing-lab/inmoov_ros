@@ -78,6 +78,12 @@ class PerceptionListener(object):
         self.moveTo("l_shoulder_out_joint", data.leftOmoplate)
 	self.moveTo("r_shoulder_out_joint", data.rightOmoplate)
 
+	self.moveTo("l_elbow_flex_joint", data.leftBicep)
+	self.moveTo("r_elbow_flex_joint", data.rightBicep)
+	
+	self.moveTo("l_shoulder_lift_joint", data.leftShoulder)
+	self.moveTo("r_shoulder_lift_joint", data.rightShoulder)
+
 
     # validates if the change is less than the secure angel established at
     # MAX_ANGLE_CHANGE
