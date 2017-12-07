@@ -13,7 +13,7 @@ float32[3] rightForeArm
 float32 rightOmoplate
 float32 rightShoulder
 float32 rightRotate
-float32 rifhtBicep
+float32 rightBicep
 
 float32 leftOmoplate
 float32 leftShoulder
