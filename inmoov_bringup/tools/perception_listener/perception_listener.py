@@ -30,7 +30,7 @@ from servos import Servo
 from load_config_from_param import load_config_from_param
 
 MAX_ANGLE_CHANGE = 50;
-DISABLE_LIMITS = True;
+DISABLE_LIMITS = False;
 
 X = 1
 Y = 0
@@ -65,7 +65,7 @@ class PerceptionListener(object):
     def data(self, data):
         self.moveTo("l_index_joint", data.leftHandIndex)
         self.moveTo("l_thumb_joint", data.leftHandThumb)
-        self.moveTo("l_middle_joint,  data.leftHandMiddle)
+        self.moveTo("l_middle_joint",  data.leftHandMiddle)
         self.moveTo("l_ring_joint", data.leftHandRing)
         self.moveTo("l_pinky_joint", data.leftHandPinky)
 
@@ -107,7 +107,7 @@ class PerceptionListener(object):
                 # motorcommand.value = 10.0
                 self.commandbus[s.bus].publish(motorcommand)
 
-                print "Moving " + name + " to " + str(motorcommand.value)
+                # print "Moving " + name + " to " + str(motorcommand.value)
 
                 # send to joint_command
                 self.jointcommand.name = []
@@ -140,3 +140,4 @@ def main():
 
 if __name__ == '__main__':  # if we're running file directly and not importing it
 	main()
+
