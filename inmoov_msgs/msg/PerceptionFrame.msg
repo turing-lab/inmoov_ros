@@ -10,6 +10,10 @@ float32[3] right_Shoulder
 float32[3] rightArm
 float32[3] rightForeArm
 
+float32 rightOmoplate
+float32 rightShoulder
+float32 rightRotate
+
 float32 leftOmoplate
 float32 leftShoulder
 float32 leftRotate
