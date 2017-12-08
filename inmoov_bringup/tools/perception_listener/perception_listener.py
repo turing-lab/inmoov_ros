@@ -47,6 +47,7 @@ class PerceptionListener(object):
         self.commandbus = {}
         self.jointcommand = JointState()
         self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
+
         self.statusSubscriber = rospy.Subscriber("perception_neuron/data", PerceptionFrame, self.data)
 
         # iterate through servo collection
@@ -63,80 +64,70 @@ class PerceptionListener(object):
         rospy.spin()
 
     def data(self, data):
-        self.moveTo("l_index_joint", data.leftHandIndex)
-        self.moveTo("l_thumb_joint", data.leftHandThumb)
-        self.moveTo("l_middle_joint",  data.leftHandMiddle)
-        self.moveTo("l_ring_joint", data.leftHandRing)
-        self.moveTo("l_pinky_joint", data.leftHandPinky)
+		self.moveTo("l_index_joint", data.leftHandIndex)
+		self.moveTo("l_thumb_joint", data.leftHandThumb)
+		self.moveTo("l_middle_joint",  data.leftHandMiddle)
+		self.moveTo("l_ring_joint", data.leftHandRing)
+		self.moveTo("l_pinky_joint", data.leftHandPinky)
 
-        self.moveTo("r_index_joint", data.rightHandIndex)
-        self.moveTo("r_thumb_joint", data.rightHandThumb)
-        self.moveTo("r_middle_joint", data.rightHandMiddle)
-        self.moveTo("r_ring_joint", data.rightHandRing)
-        self.moveTo("r_pinky_joint", data.rightHandPinky)
+		self.moveTo("r_index_joint", data.rightHandIndex)
+		self.moveTo("r_thumb_joint", data.rightHandThumb)
+		self.moveTo("r_middle_joint", data.rightHandMiddle)
+		self.moveTo("r_ring_joint", data.rightHandRing)
+		self.moveTo("r_pinky_joint", data.rightHandPinky)
 
-        self.moveTo("l_shoulder_out_joint", data.leftOmoplate)
-	self.moveTo("r_shoulder_out_joint", data.rightOmoplate)
+		self.moveTo("l_shoulder_out_joint", data.leftOmoplate)
+		self.moveTo("r_shoulder_out_joint", data.rightOmoplate)
 
-	self.moveTo("l_elbow_flex_joint", data.leftBicep)
-	self.moveTo("r_elbow_flex_joint", data.rightBicep)
-	
-	self.moveTo("l_shoulder_lift_joint", data.leftShoulder)
-	self.moveTo("r_shoulder_lift_joint", data.rightShoulder)
+		self.moveTo("l_elbow_flex_joint", data.leftBicep)
+		self.moveTo("r_elbow_flex_joint", data.rightBicep)
+
+		self.moveTo("l_shoulder_lift_joint", data.leftShoulder)
+		self.moveTo("r_shoulder_lift_joint", data.rightShoulder)
 
 
     # validates if the change is less than the secure angel established at
     # MAX_ANGLE_CHANGE
     def validate(self, actual_val, new_val):
-        # print ">>>>> " + str(abs(actual_val - new_val))
         return abs(actual_val - new_val) < MAX_ANGLE_CHANGE;
-        # return True;
 
     def moveTo(self, name, value):
         s = self.servos[name]
-
+		
         if(self.validate(float(s.goal), value) or DISABLE_LIMITS):
-            if(value > float(s.minGoal) and value < float(s.maxGoal) or DISABLE_LIMITS):
-                s.goal = value
+			# if the limits are enabled saturate the values of the angles. 					
+			if(not DISABLE_LIMITS):
+				if(value < float(s.minGoal)):
+					value = float(s.minGoal)
+				elif value > float(s.maxGoal):
+						value = float(s.maxGoal)
 
-                # send to arduino directly
-                motorcommand = MotorCommand()
-                motorcommand.id = int(s.servoPin)
-                motorcommand.parameter = PROTOCOL.GOAL
+			s.goal = value
 
-                if bool(s.inverted):
-                    motorcommand.value = float(s.maxGoal) - float(value) + float(s.minGoal)
-                #print "inversed " + str(value) + "->" + str(motorcommand.value)
-                else:
-                    motorcommand.value = value
-                # print "[" +  str(s.bus) + "]->" + str(motorcommand.value)
-                # motorcommand.value = 10.0
-                self.commandbus[s.bus].publish(motorcommand)
+			# send to arduino directly
+			motorcommand = MotorCommand()
+			motorcommand.id = int(s.servoPin)
+			motorcommand.parameter = PROTOCOL.GOAL
 
-                # print "Moving " + name + " to " + str(motorcommand.value)
+			if bool(s.inverted):
+				motorcommand.value = float(s.maxGoal) - float(value) + float(s.minGoal)
+			else:
+				motorcommand.value = value
+			self.commandbus[s.bus].publish(motorcommand)
 
-                # send to joint_command
-                self.jointcommand.name = []
-                self.jointcommand.position = []
+			# print "Moving " + name + " to " + str(motorcommand.value)
 
-                self.jointcommand.header = Header()
-                self.jointcommand.header.stamp = rospy.Time.now()
-                self.jointcommand.name.append(name)
-                # if parameter == PROTOCOL.GOAL:
-                # if bool(s.inverted):
-                #     self.jointcommand.position.append(float(s.maxGoal) - float(value) + float(s.minGoal))
-                #     # print "inversed " + str(value) + "->" + str(motorcommand.value)
-                # else:
-                #     self.jointcommand.position.append(value)
-                # else:
-                #     self.jointcommand.position.append(value)
-                self.jointcommand.position.append(float(value))
-                self.jointcommand.velocity = []
-                self.jointcommand.effort= []
-                self.jointPublisher.publish(self.jointcommand)
-        else:
-            print "No se puede mover " + name + str(value)
+			# send to joint_command to rviz
+			self.jointcommand.name = []
+			self.jointcommand.position = []
 
+			self.jointcommand.header = Header()
+			self.jointcommand.header.stamp = rospy.Time.now()
+			self.jointcommand.name.append(name)
+			self.jointcommand.position.append(float(value))
+			self.jointcommand.velocity = []
+			self.jointcommand.effort= []
+			self.jointPublisher.publish(self.jointcommand)
 
     def rad2Grad(self, rad):
         return rad*180/3.1416;
