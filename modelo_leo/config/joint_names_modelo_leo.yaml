@@ -1,0 +1,1 @@
+controller_joint_names: ['homoplate', 'sholder', 'revolute', 'bicep', ]

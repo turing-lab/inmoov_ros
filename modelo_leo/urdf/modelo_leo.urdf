@@ -1,0 +1,291 @@
+<robot
+  name="modelo_leo">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.2 -0.2 -0.2"
+        rpy="0 0 0" />
+      <mass
+        value="200.4" />
+      <inertia
+        ixx="4.8062"
+        ixy="-0.0075374"
+        ixz="-0.0060965"
+        iyy="3.8278"
+        iyz="4.6994E-05"
+        izz="2.5001" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.64706 0.61961 0.58824 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="L1">
+    <inertial>
+      <origin
+        xyz="0.0138188845635175 1.09939576331541E-08 0.014998217793023"
+        rpy="0 0 0" />
+      <mass
+        value="0.0251595110487029" />
+      <inertia
+        ixx="2.56297510713895E-06"
+        ixy="3.95470018604251E-12"
+        ixz="-7.8163214530501E-13"
+        iyy="5.36709028557026E-06"
+        iyz="1.00805280041818E-12"
+        izz="5.81881859709461E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/L1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/L1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="homoplate"
+    type="revolute">
+    <origin
+      xyz="0.3812 -0.29143 0.64182"
+      rpy="1.5708 0.0022021 -0.0077031" />
+    <parent
+      link="base_link" />
+    <child
+      link="L1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0.6"
+      effort="0"
+      velocity="0" />
+    <safety_controller
+      soft_upper="0.7"
+      soft_lower="-0.1"
+      k_velocity="0" />
+  </joint>
+  <link
+    name="L2">
+    <inertial>
+      <origin
+        xyz="0.0423873293177416 -0.0228810509340676 -1.11022302462516E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.0704531923930024" />
+      <inertia
+        ixx="3.39112669635049E-05"
+        ixy="2.41617514037386E-05"
+        ixz="7.71594075389464E-20"
+        iyy="3.39112669635047E-05"
+        iyz="-7.00919763852934E-20"
+        izz="5.95761073321307E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/L2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/L2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="sholder"
+    type="revolute">
+    <origin
+      xyz="0.02969 0 0.014998"
+      rpy="0.013998 -7.1124E-17 3.4536E-15" />
+    <parent
+      link="L1" />
+    <child
+      link="L2" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-0.9"
+      upper="0.1"
+      effort="0"
+      velocity="0" />
+    <safety_controller
+      soft_upper="0.2"
+      soft_lower="-1"
+      k_velocity="0" />
+  </joint>
+  <link
+    name="L3">
+    <inertial>
+      <origin
+        xyz="-1.77333967510407E-08 -0.121002792316606 -1.84532077951438E-08"
+        rpy="0 0 0" />
+      <mass
+        value="0.259450188319626" />
+      <inertia
+        ixx="0.000939034363081097"
+        ixy="-2.51125077471007E-10"
+        ixz="-1.25061488305566E-10"
+        iyy="5.25666371771577E-05"
+        iyz="-4.03607650686143E-10"
+        izz="0.000940751769802309" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/L3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/L3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="revolute"
+    type="revolute">
+    <origin
+      xyz="0.065268 -0.044389 0"
+      rpy="3.1416 -0.085915 3.1416" />
+    <parent
+      link="L2" />
+    <child
+      link="L3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0.5"
+      effort="0"
+      velocity="0" />
+    <safety_controller
+      soft_upper="0.6"
+      soft_lower="-0.1"
+      k_velocity="0" />
+  </joint>
+  <link
+    name="L4">
+    <inertial>
+      <origin
+        xyz="0 -0.138607408376049 3.33066907387547E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.202747339223767" />
+      <inertia
+        ixx="0.00136413564044659"
+        ixy="-1.2229038175984E-19"
+        ixz="2.22346148654254E-21"
+        iyy="2.26408049723479E-05"
+        iyz="2.7547629027078E-18"
+        izz="0.0013635220498638" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/L4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://modelo_leo/meshes/L4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="bicep"
+    type="revolute">
+    <origin
+      xyz="0 -0.22888 0"
+      rpy="1.5761 2.5396E-15 2.8035E-15" />
+    <parent
+      link="L3" />
+    <child
+      link="L4" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      lower="0.2"
+      upper="0.6"
+      effort="0"
+      velocity="0" />
+    <safety_controller
+      soft_upper="0.7"
+      soft_lower="0.1"
+      k_velocity="0" />
+  </joint>
+</robot>
