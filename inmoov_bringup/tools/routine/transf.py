@@ -120,16 +120,17 @@ class Routine(object):
         self.enable("l_upper_arm_roll_joint") # rotate
         self.enable("l_shoulder_lift_joint") #shoulder
         self.enable("l_shoulder_out_joint") #omoplate
-    def enableServosR(self):
 
+    def enableServosR(self):
         self.enable("r_thumb_joint")
         self.enable("r_index_joint")
         self.enable("r_middle_joint")
         self.enable("r_pinky_joint") 
         self.enable("r_ring_joint") 
+
         self.enable("r_elbow_flex_joint") #bicep
         self.enable("r_upper_arm_roll_joint") # rotate
-        self.enable("r_shoulder_lift_joint") #shouldet
+        self.enable("r_shoulder_lift_joint") #shoulder
         self.enable("r_shoulder_out_joint") #omoplate
 
     def enableServosH(self): 
@@ -137,49 +138,20 @@ class Routine(object):
         self.enable("head_tilt_joint")#PITCH
         self.enable("jaw_joint") 
 
-
     def definitions(self):
         # while False:
         while not rospy.is_shutdown():
-            for i in range(30,0,-1):
-                self.moveTo("l_upper_arm_roll_joint",(i+60))
-                self.moveTo("l_shoulder_lift_joint",60-i)
-                self.moveTo("l_shoulder_out_joint",110-i)
-                self.moveTo("l_elbow_flex_joint",70-i)
-                self.moveTo("head_tilt_joint",i+30)
-                self.moveTo("head_pan_joint",130-i)
-                sleep(0.05)
-
-            sleep(1)    
-
-            self.moveTo("l_thumb_joint",180)
-            sleep(1)
-            self.moveTo("l_index_joint",180)
-            sleep(1)
-            self.moveTo("l_middle_joint",180)
-            sleep(1)
-            self.moveTo("l_ring_joint",0)
-            sleep(1)
-            self.moveTo("l_pinky_joint",0)
-            sleep(4)
-            
-
-            self.moveTo("l_index_joint",0)
-            self.moveTo("l_thumb_joint",0)
-            self.moveTo("l_middle_joint",0)
-            self.moveTo("l_pinky_joint",180)
-            self.moveTo("l_ring_joint",180)
-            sleep(1)
-            for i in range(0,30):
-                self.moveTo("l_upper_arm_roll_joint",(i+60))
-                self.moveTo("l_shoulder_lift_joint",60-i)
-                self.moveTo("l_shoulder_out_joint",110-i)
-                self.moveTo("l_elbow_flex_joint",70-i)
-                self.moveTo("head_tilt_joint",i+30)
-                self.moveTo("head_pan_joint",130-i)
-                sleep(0.05)
-            sleep(3)    
-
+            f = open("/home/andresu/catkin_ws/src/leonardo_inmoov_ros/inmoov_bringup/tools/routine/angles.txt","r")
+            while True :
+                line = f.readline()    
+                if ("" == line):
+                    print "file finished"
+                    f.close()
+                    break
+                self.moveTo("l_shoulder_lift_joint",float(line)+10)
+                sleep(0.1)
+                print line
+                
 def main():
     routine = Routine()
     sleep(1)
@@ -191,4 +163,4 @@ def main():
 
 
 if __name__ == '__main__':  # if we're running file directly and not importing it
-    main() 
+    main()

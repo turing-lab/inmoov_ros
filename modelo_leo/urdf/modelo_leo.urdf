@@ -289,3 +289,8 @@
       k_velocity="0" />
   </joint>
 </robot>
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/MYROBOT</robotNamespace>
+  </plugin>
+</gazebo>
