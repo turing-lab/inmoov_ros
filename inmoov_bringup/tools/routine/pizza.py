@@ -115,7 +115,7 @@ class Routine(object):
         self.enable("l_middle_joint")
         self.enable("l_pinky_joint")
         self.enable("l_ring_joint")
-
+        self.enable("l_wrist_roll_joint")
         self.enable("l_elbow_flex_joint") #bicep
         self.enable("l_upper_arm_roll_joint") # rotate
         self.enable("l_shoulder_lift_joint") #shoulder
@@ -140,59 +140,39 @@ class Routine(object):
 
     def definitions(self):
         # while False:
-        while not rospy.is_shutdown():
-            self.moveTo("l_elbow_flex_joint", 90)
-            for i in range (30,80):
-                self.moveTo("l_shoulder_lift_joint",i)
-                self.moveTo("r_shoulder_lift_joint",i-30)
-                self.moveTo("l_shoulder_out_joint", (80+(i*0.3)))
-                self.moveTo("r_shoulder_out_joint", (130+(i*0.16)))
-                sleep(0.05)
-            sleep(2)   
-            #cerramos mano derecha        
-            self.moveTo("r_index_joint",0)
-            self.moveTo("r_thumb_joint",0)
-            self.moveTo("r_middle_joint", 0)
-            self.moveTo("r_pinky_joint",0)
-            self.moveTo("r_ring_joint",0)
-            #cerramos mano izquierda
-            self.moveTo("l_index_joint",0)
-            self.moveTo("l_thumb_joint",180)
-            self.moveTo("l_middle_joint",0)
-            self.moveTo("l_pinky_joint",180)
-            self.moveTo("l_ring_joint",180)
-            for i in range(0,6):
-                    self.moveTo("jaw_joint",15.25)
-                    sleep(0.4)
-                    self.moveTo("jaw_joint",16.15)
-                    sleep(0.4)
+        self.moveTo("r_upper_arm_roll_joint",90)    
+        for i in range(30,0,-1):
 
-            for i in range (80,30,-1):
-                self.moveTo("l_shoulder_lift_joint",i)
-                self.moveTo("r_shoulder_lift_joint",i-30)
-                self.moveTo("l_shoulder_out_joint", (80+(i*0.3)))
-                self.moveTo("r_shoulder_out_joint", (130+(i*0.16)))
-                sleep(0.05)
-               
-            
-            sleep(1) 
-            self.moveTo("l_shoulder_out_joint",80)
-            self.moveTo("r_shoulder_out_joint",132) 
-            #abrir
-            sleep(6)
-            self.moveTo("r_index_joint",180)
-            self.moveTo("r_thumb_joint",180)
-            self.moveTo("r_middle_joint",180)
-            self.moveTo("r_pinky_joint",180)
-            self.moveTo("r_ring_joint",180)
-            # mano izquierda
-            self.moveTo("l_index_joint",180)
-            self.moveTo("l_thumb_joint",0)
-            self.moveTo("l_middle_joint",180)
-            self.moveTo("l_pinky_joint",0)
-            self.moveTo("l_ring_joint",0)    
-            sleep(5)
+            self.moveTo("l_shoulder_lift_joint",50-(i*0.8))
+            self.moveTo("r_shoulder_lift_joint",70-(i*1.7))
+            self.moveTo("l_shoulder_out_joint",90-(i*0.4))
+            self.moveTo("r_shoulder_out_joint", (100-i*0.8))
+            sleep(0.05)
 
+        sleep(1)    
+
+        self.moveTo("l_thumb_joint",0)
+        self.moveTo("l_index_joint",0)
+        self.moveTo("l_wrist_roll_joint",180)
+        self.moveTo("l_ring_joint",180)
+        self.moveTo("l_pinky_joint",180)
+        sleep(8)
+        
+        self.moveTo("l_index_joint",180)
+        self.moveTo("l_thumb_joint",180)
+        self.moveTo("l_wrist_roll_joint",0)
+        self.moveTo("l_pinky_joint",0)
+        self.moveTo("l_ring_joint",0)
+        sleep(1)
+        for i in range(0,30):
+           
+          self.moveTo("l_shoulder_lift_joint",55-(i*0.8))
+          self.moveTo("r_shoulder_lift_joint",70-(i*1.7))
+          self.moveTo("l_shoulder_out_joint",90-(i*0.4))
+          self.moveTo("r_shoulder_out_joint", (100-i*0.8))
+           
+          sleep(0.05)
+        sleep(1)    
 
 def main():
     routine = Routine()

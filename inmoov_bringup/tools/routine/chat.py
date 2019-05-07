@@ -4,21 +4,16 @@ import sys
 import os
 import rospy
 import rospkg
-
 import yaml
-
 from inmoov_msgs.msg import MotorStatus
 from inmoov_msgs.msg import MotorCommand
 from inmoov_msgs.srv import MotorParameter
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Header
-
 from time import sleep
-
 import os
 import sys
 from os.path import dirname, abspath
-
 
 #hacky way to add include directory to sys path
 sys.path.append(os.path.join(dirname(dirname(dirname(abspath(__file__)))),'include'))
@@ -115,13 +110,14 @@ class Routine(object):
         self.enable("l_middle_joint")
         self.enable("l_pinky_joint")
         self.enable("l_ring_joint")
-
+        self.enable("l_wrist_roll_joint")
         self.enable("l_elbow_flex_joint") #bicep
         self.enable("l_upper_arm_roll_joint") # rotate
         self.enable("l_shoulder_lift_joint") #shoulder
         self.enable("l_shoulder_out_joint") #omoplate
+        
     def enableServosR(self):
-
+        
         self.enable("r_thumb_joint")
         self.enable("r_index_joint")
         self.enable("r_middle_joint")
@@ -131,67 +127,42 @@ class Routine(object):
         self.enable("r_upper_arm_roll_joint") # rotate
         self.enable("r_shoulder_lift_joint") #shouldet
         self.enable("r_shoulder_out_joint") #omoplate
-
+        
     def enableServosH(self): 
         self.enable("head_pan_joint")#JAW
         self.enable("head_tilt_joint")#PITCH
         self.enable("jaw_joint") 
-
-
+        
     def definitions(self):
         # while False:
-        while not rospy.is_shutdown():
-            self.moveTo("l_elbow_flex_joint", 90)
-            for i in range (30,80):
-                self.moveTo("l_shoulder_lift_joint",i)
-                self.moveTo("r_shoulder_lift_joint",i-30)
-                self.moveTo("l_shoulder_out_joint", (80+(i*0.3)))
-                self.moveTo("r_shoulder_out_joint", (130+(i*0.16)))
-                sleep(0.05)
-            sleep(2)   
-            #cerramos mano derecha        
-            self.moveTo("r_index_joint",0)
-            self.moveTo("r_thumb_joint",0)
-            self.moveTo("r_middle_joint", 0)
-            self.moveTo("r_pinky_joint",0)
-            self.moveTo("r_ring_joint",0)
-            #cerramos mano izquierda
-            self.moveTo("l_index_joint",0)
-            self.moveTo("l_thumb_joint",180)
-            self.moveTo("l_middle_joint",0)
-            self.moveTo("l_pinky_joint",180)
-            self.moveTo("l_ring_joint",180)
-            for i in range(0,6):
-                    self.moveTo("jaw_joint",15.25)
-                    sleep(0.4)
-                    self.moveTo("jaw_joint",16.15)
-                    sleep(0.4)
+        while:
 
-            for i in range (80,30,-1):
-                self.moveTo("l_shoulder_lift_joint",i)
-                self.moveTo("r_shoulder_lift_joint",i-30)
-                self.moveTo("l_shoulder_out_joint", (80+(i*0.3)))
-                self.moveTo("r_shoulder_out_joint", (130+(i*0.16)))
-                sleep(0.05)
-               
+            flag = input("ingresar estado")    
             
-            sleep(1) 
-            self.moveTo("l_shoulder_out_joint",80)
-            self.moveTo("r_shoulder_out_joint",132) 
-            #abrir
-            sleep(6)
-            self.moveTo("r_index_joint",180)
-            self.moveTo("r_thumb_joint",180)
-            self.moveTo("r_middle_joint",180)
-            self.moveTo("r_pinky_joint",180)
-            self.moveTo("r_ring_joint",180)
-            # mano izquierda
+            for i in range(30,0,-1):
+                self.moveTo("l_shoulder_lift_joint",60-i)
+                self.moveTo("l_shoulder_out_joint",110-i)
+                sleep(0.05)
+            
+            self.moveTo("l_thumb_joint",180)
             self.moveTo("l_index_joint",180)
-            self.moveTo("l_thumb_joint",0)
-            self.moveTo("l_middle_joint",180)
+            self.moveTo("l_wrist_roll_joint",0)
+            self.moveTo("l_ring_joint",0)
             self.moveTo("l_pinky_joint",0)
-            self.moveTo("l_ring_joint",0)    
-            sleep(5)
+            sleep(3)
+        
+            self.moveTo("l_thumb_joint",0)
+            self.moveTo("l_index_joint",0)
+            self.moveTo("l_wrist_roll_joint",180)
+            self.moveTo("l_ring_joint",180)
+            self.moveTo("l_pinky_joint",180)
+            sleep(3)    
+            
+            for i in range(0,30):
+                self.moveTo("l_shoulder_lift_joint",60-i)
+                self.moveTo("l_shoulder_out_joint",110-i)   
+                sleep(0.05)
+            sleep(2) 
 
 
 def main():
@@ -201,7 +172,7 @@ def main():
     routine.enableServosR()
     routine.enableServosH()
     routine.definitions()
-
+    
 
 
 if __name__ == '__main__':  # if we're running file directly and not importing it

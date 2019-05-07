@@ -143,17 +143,23 @@ class Routine(object):
     def definitions(self):
         # while False:
         while not rospy.is_shutdown():
-            for i in range(40,0,-1):
-                self.moveTo("l_upper_arm_roll_joint",(i+60))
-                self.moveTo("l_shoulder_lift_joint",60-i)
-                self.moveTo("l_shoulder_out_joint",110-i)
-                self.moveTo("l_elbow_flex_joint",70-i)
-                self.moveTo("head_tilt_joint",i+30)
+            for i in range(0,10):
+		self.moveTo("jaw_joint",40)
+	        sleep(0.3)
+		self.moveTo("jaw_joint",30)    
+		sleep(0.2)
+
+	    for i in range(80,0,-1):
+                self.moveTo("head_tilt_joint",(i*0.6)+30)
                 self.moveTo("head_pan_joint",150-i)
                 sleep(0.05)
-
-            sleep(1)    
-
+	   
+	    sleep(2)
+	    for i in range(0,80):
+                self.moveTo("head_tilt_joint",(i*0.6)+30)
+                self.moveTo("head_pan_joint",150-i)
+                sleep(0.05)	 
+	    sleep(1)
 
 
 

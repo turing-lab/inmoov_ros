@@ -115,7 +115,7 @@ class Routine(object):
         self.enable("l_middle_joint")
         self.enable("l_pinky_joint")
         self.enable("l_ring_joint")
-
+        self.enable("l_wrist_roll_joint")
         self.enable("l_elbow_flex_joint") #bicep
         self.enable("l_upper_arm_roll_joint") # rotate
         self.enable("l_shoulder_lift_joint") #shoulder
@@ -145,10 +145,13 @@ class Routine(object):
             for i in range(30,0,-1):
                 self.moveTo("l_upper_arm_roll_joint",(i+60))
                 self.moveTo("l_shoulder_lift_joint",60-i)
+                self.moveTo("r_shoulder_lift_joint",i-30)
                 self.moveTo("l_shoulder_out_joint",110-i)
+                self.moveTo("r_shoulder_out_joint", (130+(i*0.16)))
+
                 self.moveTo("l_elbow_flex_joint",70-i)
-                self.moveTo("head_tilt_joint",i+30)
-                self.moveTo("head_pan_joint",130-i)
+                self.moveTo("head_tilt_joint",(i*1.4)+30)
+                self.moveTo("head_pan_joint",130-(i*2))
                 sleep(0.05)
 
             sleep(1)    
@@ -157,7 +160,7 @@ class Routine(object):
             sleep(1)
             self.moveTo("l_index_joint",180)
             sleep(1)
-            self.moveTo("l_middle_joint",180)
+            self.moveTo("l_wrist_roll_joint",0)
             sleep(1)
             self.moveTo("l_ring_joint",0)
             sleep(1)
@@ -167,7 +170,7 @@ class Routine(object):
 
             self.moveTo("l_index_joint",0)
             self.moveTo("l_thumb_joint",0)
-            self.moveTo("l_middle_joint",0)
+            self.moveTo("l_wrist_roll_joint",180)
             self.moveTo("l_pinky_joint",180)
             self.moveTo("l_ring_joint",180)
             sleep(1)
@@ -176,10 +179,10 @@ class Routine(object):
                 self.moveTo("l_shoulder_lift_joint",60-i)
                 self.moveTo("l_shoulder_out_joint",110-i)
                 self.moveTo("l_elbow_flex_joint",70-i)
-                self.moveTo("head_tilt_joint",i+30)
-                self.moveTo("head_pan_joint",130-i)
+                self.moveTo("head_tilt_joint",(i*1.4)+30)
+                self.moveTo("head_pan_joint",130-(i*2))
                 sleep(0.05)
-            sleep(3)    
+            sleep(9)    
 
 def main():
     routine = Routine()
